@@ -143,6 +143,28 @@ document.getElementById("colorButton").addEventListener("click",function(){
   confirmButtonText: 'Cool'
 })
 })
+function prompt(){
+  let toast = function (){
+    const Toast = Swal.mixin({
+  toast: true,
+  position: 'center',
+  iconColor: 'white',
+  customClass: {
+    popup: 'colored-toast',
+  },
+  showConfirmButton: false,
+  timer: 1500,
+  timerProgressBar: true,
+})
+Toast.fire({
+    icon: 'success',
+    title: 'Success',
+  })
+  }
+  return {
+    toast:toast
+  }
+}
 </script>
       
 
