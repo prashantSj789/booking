@@ -9,21 +9,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/css/datepicker-bs5.min.css">
     <link rel="stylesheet" type="text/css" href="https://unpkg.com/notie/dist/notie.min.css">
-   
-    <style>
-     .my-footer{
-        height: 5em;
-        background-colour: #163b65;
-        margin-top: 1.5em;
-        padding: 1em;
-        color: FFFFFF;
-        font-size:80%;
-      }
-     .room-image{
-        max-width:50%;
-      }
-
-    </style>
+    <link rel="stylesheet" type="text/css" herf="static/images/css/styles.css"
+ 
     <title>Hello, world!</title>
   </head>
   <body>
@@ -105,6 +92,7 @@
 
 <script>
   // Example starter JavaScript for disabling form submissions if there are invalid fields
+  
 (function () {
   'use strict'
 
@@ -130,24 +118,44 @@ const rangepicker = new DateRangePicker(elem, {
 });
 function notifier(msg,msgtype){
   notie.alert({
-  type: "msgtype", // optional, default = 4, enum: [1, 2, 3, 4, 5, 'success', 'warning', 'error', 'info', 'neutral']
-  text: "msg",
+  type: msgtype, // optional, default = 4, enum: [1, 2, 3, 4, 5, 'success', 'warning', 'error', 'info', 'neutral']
+  text: msg,
 
 })
 }
 document.getElementById("colorButton").addEventListener("click",function(){
-  Swal.fire({
-  title: 'Error!',
-  text: 'Do you want to continue',
-  icon: 'error',
-  confirmButtonText: 'Cool'
-})
+let html=`
+<form id="check-availibilty-form" action="" method="post" novalidate class="needs-validation">
+ <div class="form-row">
+   <div class="col">
+    <div class="form-row" id="reservation-dates-modal">
+     <div class="col">
+       <input required class="form-control" type ="text" name="start" id="start" placeholder="Arrival">
+     </div>
+     <div class="col">
+       <input required class="form-control" type ="text" name="end" id="end" placeholder="Departure">
+     </div>
+    </div>
+  </div>
+ </div>
+</form>
+`;
+let attention = prompt();
+attention.custom({msg:html})
 })
 function prompt(){
-  let toast = function (){
+  let toast = function (c){
+    const{
+    msg="",
+    icon="sucess",
+    position="top-end"
+
+    } =c;
     const Toast = Swal.mixin({
   toast: true,
-  position: 'center',
+  title:msg,
+  position:position,
+  icon:icon,
   iconColor: 'white',
   customClass: {
     popup: 'colored-toast',
@@ -156,14 +164,36 @@ function prompt(){
   timer: 1500,
   timerProgressBar: true,
 })
+ async function custom(c){
+  const{
+   msg="",
+   title="",
+  } = c;
+  const { value: formValues } = await Swal.fire({
+  title: title,
+  html:msg,
+  backdrop:false,
+  focusConfirm: false,
+  showConfirmButton:true,
+  preConfirm: () => {
+    return [
+      document.getElementById("start").value,
+      document.getElementById("end").value
+    ];
+  }
+});
+if (formValues) {
+  Swal.fire(JSON.stringify(formValues));
+}
+}
 Toast.fire({
-    icon: 'success',
-    title: 'Success',
   })
-  }
   return {
-    toast:toast
+    toast:toast,
+    custom:custom,
   }
+  }
+  
 }
 </script>
       
