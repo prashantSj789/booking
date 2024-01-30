@@ -44,7 +44,7 @@ func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
 	})
 }
 func (m *Repository) Avalibilty(w http.ResponseWriter, r *http.Request) {
-	render.RenderTemplate(w, "search-availibilty.page.tmpl", &models.TemplateData{})
+	render.RenderTemplate(w, "search-availibility.page.tmpl", &models.TemplateData{})
 }
 func (m *Repository) Majors(w http.ResponseWriter, r *http.Request) {
 	render.RenderTemplate(w, "majors.page.tmpl", &models.TemplateData{})
