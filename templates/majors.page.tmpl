@@ -1,0 +1,31 @@
+{{template "base" .}}
+
+{{define "content"}}
+<style>
+    .room-image{
+      max-width:50%;
+    }   
+</style>
+<div class="container">
+    <div class="row">
+     <div class="col">
+      <img src="static/images/marjors-suite.png" class="img-fluid img-thumbnail room-image mx-auto d-block mt-4 " alt="room img">
+     </div>
+    </div>
+   </div>
+   <div class="container">
+    <div class="row">
+      <div class="col">
+        <h1 class="text-center mt-3">Major Suites</h1>
+      </div>
+    </div>
+   </div>
+   <div class="container">
+    <div class="row">
+      <div class="col text-center mt-5">
+       <button type="button" herf="reservation.html" class="btn btn-success">Check Availibility</button>
+     </div>
+    </div>
+   </div>
+   
+{{end}}
