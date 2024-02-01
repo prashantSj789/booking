@@ -4,9 +4,8 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/justinas/nosurf"
-	"github.com/prashantSj789/bookings/pkg/config"
-	"github.com/prashantSj789/bookings/pkg/models"
-
+	"github.com/prashantSj789/bookings/internal/config"
+	"github.com/prashantSj789/bookings/internal/models"
 	"html/template"
 	"log"
 	"net/http"

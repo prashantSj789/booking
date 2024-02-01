@@ -2,16 +2,13 @@ package main
 
 import (
 	"fmt"
-
 	"github.com/alexedwards/scs/v2"
-	"github.com/prashantSj789/bookings/pkg/config"
-	"github.com/prashantSj789/bookings/pkg/handlers"
-
+	"github.com/prashantSj789/bookings/internal/config"
+	"github.com/prashantSj789/bookings/internal/handlers"
+	"github.com/prashantSj789/bookings/internal/render"
 	"log"
 	"net/http"
 	"time"
-
-	"github.com/prashantSj789/bookings/pkg/render"
 )
 
 const portNumber = ":8080"
