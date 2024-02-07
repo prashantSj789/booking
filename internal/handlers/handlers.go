@@ -11,6 +11,7 @@ import (
 	"github.com/prashantSj789/bookings/internal/models"
 	"github.com/prashantSj789/bookings/internal/render"
 )
+
 var Repo *Repository
 
 // Repository is the repository type
@@ -55,8 +56,12 @@ func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
 
 // Reservation renders the make a reservation page and displays form
 func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
+	var emptyReservation models.Reservation
+	data := make(map[string]interface{})
+	data["reservation"] = emptyReservation
 	render.RenderTemplate(w, r, "make-reservation.page.tmpl", &models.TemplateData{
 		Form: forms.New(nil),
+		Data : data,
 	})
 }
 
@@ -77,10 +82,9 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 
 	form := forms.New(r.PostForm)
 
-	form.Has("first_name", r)
-	form.Has("last_name",r)
-	form.Has("email",r)
-	form.Has("phone",r)
+    form.Required("first_name","last_name","email")
+	form.IsEmail("email")
+
 
 	if !form.Valid() {
 		data := make(map[string]interface{})
