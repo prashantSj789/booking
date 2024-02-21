@@ -3,15 +3,15 @@ package handlers
 import (
 	"encoding/json"
 	"fmt"
-	"log"
-	"net/http"
-
 	"github.com/prashantSj789/bookings/internal/config"
 	"github.com/prashantSj789/bookings/internal/forms"
 	"github.com/prashantSj789/bookings/internal/models"
 	"github.com/prashantSj789/bookings/internal/render"
+	"log"
+	"net/http"
 )
 
+// Repo the repository used by the handlers
 var Repo *Repository
 
 // Repository is the repository type
@@ -59,6 +59,7 @@ func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
 	var emptyReservation models.Reservation
 	data := make(map[string]interface{})
 	data["reservation"] = emptyReservation
+
 	render.RenderTemplate(w, r, "make-reservation.page.tmpl", &models.TemplateData{
 		Form: forms.New(nil),
 		Data: data,
@@ -83,6 +84,7 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 	form := forms.New(r.PostForm)
 
 	form.Required("first_name", "last_name", "email")
+	form.MinLength("first_name", 3, r)
 	form.IsEmail("email")
 
 	if !form.Valid() {
@@ -94,12 +96,9 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 		})
 		return
 	}
+
 	m.App.Session.Put(r.Context(), "reservation", reservation)
 	http.Redirect(w, r, "/reservation-summary", http.StatusSeeOther)
-}
-func (m *Repository) ReservationSummary(w http.ResponseWriter, r *http.Request) {
-
-	render.RenderTemplate(w, r, "reservation-summary.page.tmpl", &models.TemplateData{})
 }
 
 // Generals renders the room page
@@ -149,4 +148,20 @@ func (m *Repository) AvailabilityJSON(w http.ResponseWriter, r *http.Request) {
 // Contact renders the contact page
 func (m *Repository) Contact(w http.ResponseWriter, r *http.Request) {
 	render.RenderTemplate(w, r, "contact.page.tmpl", &models.TemplateData{})
+}
+
+// ReservationSummary displays the res summary page
+func (m *Repository) ReservationSummary(w http.ResponseWriter, r *http.Request) {
+	reservation, ok := m.App.Session.Get(r.Context(), "reservation").(models.Reservation)
+	if !ok {
+		log.Println("Cannot get item from session")
+		return
+	}
+
+	data := make(map[string]interface{})
+	data["reservation"] = reservation
+
+	render.RenderTemplate(w, r, "reservation-summary.page.tmpl", &models.TemplateData{
+		Data: data,
+	})
 }
